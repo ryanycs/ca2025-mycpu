@@ -170,5 +170,14 @@ class PipelineProgramTest extends AnyFlatSpec with ChiselScalatestTester {
         c.io.mem_debug_read_data.expect(0x2022L.U)
       }
     }
+
+    it should "convert int32 to bf16 correctly" in {
+      runProgram("int32_to_bf16.asmbin", cfg) { c =>
+        c.clock.setTimeout(0)
+        c.clock.step(10000)
+        c.io.regs_debug_read_address.poke(10.U) // a0
+        c.io.regs_debug_read_data.expect(0x0.U)
+      }
+    }
   }
 }
